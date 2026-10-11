@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Guess the Number</title>
+<style>
+  body { 
+     font-family: Arial,
+     sans-serif; 
+     text-align: center;
+    margin-top: 50px; 
+    }
+  input, button {
+     padding: 8px;
+      margin: 5px;
+     }
+  #feedback {
+     font-weight: bold;
+      margin-top: 15px;
+       }
+</style>
+</head>
+<body>
+
+<h1>Guess the Number</h1>
+<p>I'm thinking of a number between 1 and 100.</p>
+<p> Attempts left: <span id="remain-attempt"> </span></p>
+<input type="number" id="guess" min="1" max="100" placeholder="Enter your guess">
+<button onclick="checkGuess()">Guess</button>
+<button onclick="resetGame()">Reset</button>
+
+<p id="feedback"></p>
+
+<script>
+
+let secretNumber;
+let attempts;
+let attemptsLeft = 10;
+  document.getElementById('remain-attempt').textContent = 10;
+
+function updateAttempts() {
+  document.getElementById('remain-attempt').textContent = attemptsLeft - attempts;
+}
+
+function generateNumber() {
+  secretNumber = Math.floor(Math.random() * 100) + 1;
+  attempts = 0;
+}
+
+function checkGuess() {
+  const guess = Number(document.getElementById('guess').value);
+  attempts++;
+  updateAttempts();
+  
+  if (!guess || guess < 1 || guess > 100) {
+    document.getElementById('feedback').textContent = "Please enter a valid number between 1 and 100.";
+    return;
+  }
+  
+  if (guess === secretNumber) {
+    document.getElementById('feedback').textContent = `Correct! You guessed it in ${attempts} tries.`;
+  } else if (guess < secretNumber) {
+    document.getElementById('feedback').textContent = "Too low! Try again.";
+  } else {
+    document.getElementById('feedback').textContent = "Too high! Try again.";
+  }
+}
+
+function resetGame() {
+  generateNumber();
+  document.getElementById('feedback').textContent = "";
+  document.getElementById('guess').value = "";
+  attemptsLeft = 10;
+}
+
+generateNumber();
+</script>
+
+</body>
+</html>
